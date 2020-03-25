@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:todoy_flutter/model/task.dart';
+import 'package:provider/provider.dart';
+import 'package:todoy_flutter/model/task_provider.dart';
 
 class AddTaskScreen extends StatefulWidget {
-  final Function addTask;
-
-  AddTaskScreen({this.addTask});
-
   @override
   _AddTaskScreenState createState() => _AddTaskScreenState();
 }
 
 class _AddTaskScreenState extends State<AddTaskScreen> {
-  String newName;
+  String newName = '';
 
   @override
   Widget build(BuildContext context) {
     return Container(
       color: Color(0xff757575),
+      // height: 1900.0,
+      constraints: BoxConstraints.expand(),
       // decoration: BoxDecoration(
       // borderRadius: BorderRadius.vertical(top: Radius.circular(20.0))),
       child: Container(
@@ -42,9 +41,8 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
               autofocus: true,
               textAlign: TextAlign.center,
               onChanged: (value) {
-                setState(() {
-                  newName = value;
-                });
+                newName = value;
+                print(newName);
               },
             ),
             SizedBox(
@@ -56,7 +54,8 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
               color: Colors.lightBlueAccent,
               onPressed: () {
                 print(newName);
-                widget.addTask(Task(name: newName));
+                Provider.of<TaskProvider>(context, listen: false)
+                    .addTask(newName);
                 Navigator.pop(context);
               },
             )

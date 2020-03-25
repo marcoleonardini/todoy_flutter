@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:todoy_flutter/model/task_provider.dart';
 
 class TaskTile extends StatelessWidget {
   final bool isChecked;
   final String title;
   final Function checkboxCallback;
+  final Function longPressDelete;
 
-  TaskTile({this.isChecked, this.title, this.checkboxCallback});
+  TaskTile(
+      {this.isChecked,
+      this.title,
+      this.checkboxCallback,
+      this.longPressDelete});
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +27,7 @@ class TaskTile extends StatelessWidget {
         value: isChecked,
         onChanged: checkboxCallback,
       ),
+      onLongPress: longPressDelete,
     );
   }
 }

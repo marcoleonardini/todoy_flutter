@@ -1,22 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:todoy_flutter/model/task.dart';
+import 'package:provider/provider.dart';
+import 'package:todoy_flutter/model/task_provider.dart';
 import 'package:todoy_flutter/screens/add_task_screen.dart';
 
 import '../widgets/tasks_list.dart';
 
-class TaskScreen extends StatefulWidget {
-  @override
-  _TaskScreenState createState() => _TaskScreenState();
-}
-
-class _TaskScreenState extends State<TaskScreen> {
-  List<Task> tasks = [
-    Task(name: 'Buy Milk'),
-    Task(name: 'Buy Eggs'),
-    Task(name: 'Buy Bread'),
-    Task(name: 'Buy Licor'),
-  ];
-
+class TaskScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,7 +40,7 @@ class _TaskScreenState extends State<TaskScreen> {
                   ),
                 ),
                 Text(
-                  '${tasks.length}  Tasks',
+                  '${Provider.of<TaskProvider>(context).taskCount}  Tasks',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 18.0,
@@ -69,9 +58,7 @@ class _TaskScreenState extends State<TaskScreen> {
                   top: Radius.circular(20.0),
                 ),
               ),
-              child: TaskList(
-                tasks: tasks,
-              ),
+              child: TaskList(),
             ),
           )
         ],
@@ -82,25 +69,12 @@ class _TaskScreenState extends State<TaskScreen> {
           Icons.add,
           size: 36.0,
         ),
-        onPressed: () {
-          buildBottomSheet(context);
-        },
+        onPressed: () => showModalBottomSheet(
+          context: context,
+          builder: (context) => AddTaskScreen(),
+          // isScrollControlled: true,
+        ),
       ),
     );
-  }
-
-  void buildBottomSheet(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      builder: (context) => AddTaskScreen(
-        addTask: addTask,
-      ),
-    );
-  }
-
-  void addTask(Task task) {
-    setState(() {
-      tasks.add(task);
-    });
   }
 }
